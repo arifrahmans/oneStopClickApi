@@ -1,7 +1,7 @@
 import mongoose, { Schema} from 'mongoose'
 import validator from 'validator'
 import { hashSync, compareSync } from 'bcrypt-nodejs';
-import { passwordReg } from './user.validations';
+import { passwordReg } from '../validations/user.validations';
 import jwt from 'jsonwebtoken';
 import constants from '../config/constants';
 import uniqueValidator from 'mongoose-unique-validator';
