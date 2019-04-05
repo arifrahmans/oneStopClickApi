@@ -36,13 +36,30 @@ const UserSchema = new Schema({
           message: '{VALUE} is not a valid password!',
         },
       },
-      favorites: {
-        posts: [{
-          type: Schema.Types.ObjectId,
-          ref: 'Post'
-        }]
-      }
+      resetPasswordOTP: {
+        type: String
+      },
+      resetPasswordExpires: {
+        type: Date
+      },
+      twitterProvider: {
+        type: {
+            id: String,
+            token: String,
+            tokenSecret : String
+        },
+        select: false
     },
+    googleProvider: {
+        type: {
+            id: String,
+            token: String
+        },
+        select: false
+    }
+    },
+
+      
     { timestamps: true },
   );
 
@@ -86,7 +103,75 @@ const UserSchema = new Schema({
           userName: this.userName,
         };
       },
+      toGoogleJSON() {
+        return {
+          _id: this._id,
+          userName: this.userName,
+          token: `JWT ${this.createToken()}`,
+          socialAuthData : this.googleProvider
+        };
+      },
     };
+
+    UserSchema.statics.upsertGoogleUser =  (accessToken, refreshToken, profile, cb) => {
+      const that = this;
+      return this.findOne({
+          'googleProvider.id': profile.id
+      }, async (err, user) => {
+        console.log(user);
+          // no user was found, lets create a new one
+          if (!user) {
+              let newUser = new that({
+                  userName: profile.displayName,
+                  email: profile.emails[0].value,
+                  password: accessToken,
+                  googleProvider: {
+                      id: profile.id,
+                      token: accessToken
+                  }
+              });
+
+              await newUser.save((error, savedUser) => {
+                  if (error) {
+                    return cb(err, false);
+                  }
+                  return cb(error, savedUser);
+              });
+          }else{
+              return cb(err, false);
+          }
+      });
+  };
+
+  UserSchema.statics.upsertTwitterUser = function(token, tokenSecret, profile, cb) {
+    const that = this;
+    return this.findOne({
+        'twitterProvider.id': profile.id
+    }, (err, user) => {
+        // no user was found, lets create a new one
+        if (!user) {
+            let newUser = new that({
+                email: profile.emails[0].value,
+                password : token,
+                userName : profile.id,
+                twitterProvider: {
+                    id: profile.id,
+                    token,
+                    tokenSecret
+                }
+            });
+
+            newUser.save((error, savedUser) => {
+                if (error) {
+                    console.log(error);
+                }
+                return cb(error, savedUser);
+            });
+        } else {
+            return cb(err, user);
+        }
+    });
+};
 
 
 export default mongoose.model('User', UserSchema);
