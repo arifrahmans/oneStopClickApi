@@ -2,8 +2,6 @@ const devConfig = {
     MONGO_URL: 'mongodb://localhost:27017/oneStopClick-dev',
     JWT_SECRET: 'supersecretcak',
     JWT_SECRET_RESET: 'supersecretcakreset',
-    EMAIL_ADDRESS: 'areefrahmans@gmail.com',
-    EMAIL_PASSWORD: 'Yogya@2019!',
     googleAuth : {
         clientID : '921848937085-tr062vohkp907rrmplm9cfqjstrmo4ha.apps.googleusercontent.com',
         clientSecret : 'L7j75Y0eTL0Hx7e1jFo-ScFA',
@@ -19,8 +17,6 @@ const devConfig = {
 const testConfig = {
     MONGO_URL: 'mongodb://localhost:27017/oneStopClick-test',
     JWT_SECRET_RESET: 'supersecretcakreset',
-    EMAIL_ADDRESS: 'areefrahmans@gmail.com',
-    EMAIL_PASSWORD: 'Yogya@2019!',
     googleAuth : {
         clientID : '921848937085-tr062vohkp907rrmplm9cfqjstrmo4ha.apps.googleusercontent.com',
         clientSecret : 'L7j75Y0eTL0Hx7e1jFo-ScFA',
@@ -36,8 +32,6 @@ const testConfig = {
 const prodConfig = {
     MONGO_URL: 'mongodb://localhost:27017/oneStopClick-prod',
     JWT_SECRET_RESET: 'supersecretcakreset',
-    EMAIL_ADDRESS: 'areefrahmans@gmail.com',
-    EMAIL_PASSWORD: 'Yogya@2019!',
     googleAuth : {
         clientID : '921848937085-tr062vohkp907rrmplm9cfqjstrmo4ha.apps.googleusercontent.com',
         clientSecret : 'L7j75Y0eTL0Hx7e1jFo-ScFA',
