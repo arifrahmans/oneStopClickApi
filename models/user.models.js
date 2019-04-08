@@ -111,6 +111,14 @@ const UserSchema = new Schema({
           socialAuthData : this.googleProvider
         };
       },
+      toTwitterSON() {
+        return {
+          _id: this._id,
+          userName: this.userName,
+          token: `JWT ${this.createToken()}`,
+          socialAuthData : this.twitterProvider
+        };
+      },
     };
 
     UserSchema.statics.upsertGoogleUser =  (accessToken, refreshToken, profile, cb) => {
